@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,13 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Interfaces\Interfaces.csproj">
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{b7d75b75-24ba-41ad-8971-989475719829}</Project>
       <Name>Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAOLogic\DAOLogic.csproj">
-      <Project>{28553290-a5b6-42d0-a214-f7f7e9f283db}</Project>
-      <Name>DAOLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

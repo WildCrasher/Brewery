@@ -8,6 +8,7 @@ namespace Interfaces
 {
     public interface IDAO
     {
-        void print();
+        List<IBeer> getBeers();
+        List<IProducent> getProducents();
     }
 }

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public enum Race{ Pilzner, Hefe_Weizen, Porter, IPA, RIS, Bock, Barley_Wine, Ale, Witbier, Grodziskie };   
+    public enum Race{ Pilzner, Hefe_Weizen, Porter, IPA, RIS, Bock, Barley_Wine, Ale, Witbier, Grodziskie, Stout };   
 }

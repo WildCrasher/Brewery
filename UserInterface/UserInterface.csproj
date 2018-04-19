@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,20 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="UI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
-      <Project>{b7d75b75-24ba-41ad-8971-989475719829}</Project>
-      <Name>Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="BusinessLogic\BusinessLogic.csproj">
       <Project>{426a096a-3fe9-4e32-93a0-afa13cea70cf}</Project>
       <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="Core\Core.csproj">
+      <Project>{c6710b90-c4cc-4462-9688-4c934a9cb481}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="Interfaces\Interfaces.csproj">
+      <Project>{b7d75b75-24ba-41ad-8971-989475719829}</Project>
+      <Name>Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

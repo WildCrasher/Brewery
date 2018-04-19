@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public enum Speciality { Smoked, Sour, Barrel_Aged, Whisky, Double, Imperial, Scotish, Doppel, White, Dark, Dunkel };
+    public enum Speciality { Smoked, Sour, Barrel_Aged, Whisky, Double, Imperial, Scotish, Doppel, White, Dark, Dunkel, Extra };
 }
 
