@@ -22,14 +22,5 @@ namespace UserInterface.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public string Library {
-            get {
-                return ((string)(this["Library"]));
-            }
-        }
     }
 }
