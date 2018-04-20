@@ -17,7 +17,7 @@ namespace BusinessLogic
         {
             string libraryPath = System.Configuration.ConfigurationManager.AppSettings["Library"];
             Console.WriteLine(libraryPath);
-            Assembly library = Assembly.LoadFrom(@"" + libraryPath);
+            Assembly library = Assembly.LoadFrom(@"..\..\" + libraryPath);
             Type[] daoTypes = library.GetTypes();
             ConstructorInfo daoConstructor = null;
          
