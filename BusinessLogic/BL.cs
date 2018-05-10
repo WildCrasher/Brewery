@@ -12,12 +12,11 @@ namespace BusinessLogic
 {
     public class BL : IBL
     {
-        public IDAO dao { get; set; }
+        public IDAO Dao { get; set; }
         public BL()
         {
             string libraryPath = System.Configuration.ConfigurationManager.AppSettings["Library"];
-            Console.WriteLine(libraryPath);
-            Assembly library = Assembly.LoadFrom(@"..\..\" + libraryPath);
+            Assembly library = Assembly.UnsafeLoadFrom(@"../../../" + libraryPath);
             Type[] daoTypes = library.GetTypes();
             ConstructorInfo daoConstructor = null;
          
@@ -30,13 +29,12 @@ namespace BusinessLogic
                 }
             }
                 
-            dao = (IDAO)daoConstructor?.Invoke(new object[] { });
+            Dao = (IDAO)daoConstructor?.Invoke(new object[] { });
             
-                  //IEnumerable<ConstructorInfo> ctorInfo = item.GetConstructors().Where(ctor => { Console.WriteLine(ctor.GetParameters()); return ctor.GetParameters() == null;  }) ;
         }
         public IDAO getData()
         {
-            return dao;
+            return Dao;
         }
     }
 }

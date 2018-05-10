@@ -1,0 +1,58 @@
+﻿<Window x:Class="UIView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UIView"
+        mc:Ignorable="d"
+        Title="Base of beers" Height="354.393" Width="530.858" Name="Window1">
+
+    <Window.Resources>
+        <DataTemplate x:Key="BindTwoProperties">
+            <StackPanel FlowDirection="RightToLeft"  Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Race}"></TextBlock>
+                <TextBlock Text=" "></TextBlock>
+                <TextBlock Text="{Binding Path=Speciality}"></TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <TabControl>
+        <TabItem Header="Products">
+            <StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Name" Width="{Binding ElementName=BeerNames, Path=ActualWidth}"></Label>
+                    <Label Content="Details" Width="{Binding ElementName=BeerDetails, Path=ActualWidth}"></Label>
+                </StackPanel>
+                
+                <DockPanel>
+                    <ListBox Name="BeerNames"
+                             DockPanel.Dock="Left"
+                             ItemTemplate="{StaticResource BindTwoProperties}" 
+                             ItemsSource="{Binding ElementName=Window1, Path=Beers}"
+                             SelectionChanged="BeerNames_Selected">
+
+                    </ListBox>
+
+                    <ListBox Name="BeerDetails" ItemsSource="{Binding ElementName=Window1, Path=BeerDetailsView}">
+                    </ListBox>
+                </DockPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Producents">
+          
+            <DockPanel>
+                
+                <ListBox Name="ProducentNames"
+                         DockPanel.Dock="Left" 
+                         ItemsSource="{Binding ElementName=Window1, Path=Producents}" SelectionChanged="ProducentNames_SelectionChanged"
+                         DisplayMemberPath="Name">
+
+                </ListBox>
+                <ListBox Name="ProducentDetails" ItemsSource="{Binding ElementName=Window1, Path=ProducentDetailsView}">
+
+                </ListBox>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

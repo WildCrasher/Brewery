@@ -16,17 +16,18 @@ namespace UserInterface
             {
                 IProducent producent = producents[i];
                 Console.WriteLine($"Producent number {i + 1}:");
-                Console.WriteLine($"Producent's name: {producent.name}\nTown: {producent.town}\nStreet: {producent.street}\nStreet number: {producent.streetNumber}");
+                Console.WriteLine($"Producent's name: {producent.Name}\nTown: {producent.Town}\nStreet: {producent.Street}\nStreet number: {producent.StreetNumber}");
                 Console.WriteLine($"-------------------");
             }
         }
+
         private static void printAllBeers( List<IBeer> beers)
         {   
             for (int i = 0; i < beers.Count; i++)
             {
                 IBeer beer = beers[i];
                 Console.WriteLine($"Bear number {i + 1}:");
-                Console.WriteLine($"{beer.speciality} {beer.race}\nProducent: {beer.producent.name}\n{beer.alcoholPercent}% of alcohol\nDensity of wort (BLG): {beer.BLG}\nBiterness in IBU scale: {beer.IBU}\nHue in EBC scale: {beer.EBC}\nBest drink in temperature: {beer.servingTemperature}C and to: {beer.bestBefore}\nSea story: {beer.seaStory}\nIngredients: {beer.ingredients}");
+                Console.WriteLine($"{beer.Speciality} {beer.Race}\nProducent: {beer.Producent.Name}\n{beer.AlcoholPercent}% of alcohol\nDensity of wort (BLG): {beer.BLG}\nBiterness in IBU scale: {beer.IBU}\nHue in EBC scale: {beer.EBC}\nBest drink in temperature: {beer.ServingTemperature}C and to: {beer.BestBefore}\nSea story: {beer.SeaStory}\nIngredients: {beer.Ingredients}");
                 Console.WriteLine($"Cheers!");
                 Console.WriteLine($"-------------------");
             }

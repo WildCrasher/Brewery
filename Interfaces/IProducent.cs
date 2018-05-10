@@ -8,9 +8,9 @@ namespace Interfaces
 {
     public interface IProducent
     {
-        String name { get; set; }
-        String town { get; set; }
-        String street { get; set; }
-        int streetNumber { get; set; }
+        String Name { get; set; }
+        String Town { get; set; }
+        String Street { get; set; }
+        int StreetNumber { get; set; }
     }
 }
