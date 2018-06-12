@@ -9,10 +9,10 @@ namespace DAOLogic
 {
     public class Producent : IProducent
     {
-        public String Name { get; set; }
-        public String Town { get; set; }
-        public String Street { get; set; }
-        public int StreetNumber { get; set; }
+        public String Name { get; set; } = "Golem";
+        public String Town { get; set; } = "Poznań";
+        public String Street { get; set; } = "Plac Wolności";
+        public int StreetNumber { get; set; } = 10;
 
         public Producent(String _name, String _town, String _street, int _streetNumber)
         {
@@ -20,6 +20,11 @@ namespace DAOLogic
             Town = _town;
             Street = _street;
             StreetNumber = _streetNumber;
+        }
+
+        public Producent()
+        {
+
         }
     }
 }

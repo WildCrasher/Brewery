@@ -33,5 +33,26 @@ namespace DAOLogic
         {
             return producents;
         }
+
+        public IBeer GetNewBeer()
+        {
+            return new Beer();
+        }
+
+        public void AddNewBeer(IBeer beer)
+        {
+            beers.Add(beer);
+        }
+
+        public IProducent GetNewProducent()
+        {
+            return new Producent();
+        }
+
+        public void AddNewProducent(IProducent producent)
+        {
+            //adding producent to database
+            //    producents.Add(producent);
+        }
     }
 }

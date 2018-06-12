@@ -3,11 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:beerns="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:UIView"
         mc:Ignorable="d"
-        Title="Base of beers" Height="354.393" Width="530.858" Name="Window1">
+        Title="Base of beers" Height="auto" Width="auto" Name="Window1">
 
     <Window.Resources>
+        <beerns:BeersViewModel x:Key="BeersData"/>
+
         <DataTemplate x:Key="BindTwoProperties">
             <StackPanel FlowDirection="RightToLeft"  Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Race}"></TextBlock>
@@ -15,44 +19,162 @@
                 <TextBlock Text="{Binding Path=Speciality}"></TextBlock>
             </StackPanel>
         </DataTemplate>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ListBox DockPanel.Dock="Bottom" Name="lstErrors"
+                                     ItemsSource="{Binding ElementName=ErrTextBox,Path=AdornedElement.(Validation.Errors)}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Grid DockPanel.Dock="Left">
+                                <Ellipse Width="20" Height="20" Stroke="DarkRed" Fill="DarkRed"/>
+                                <Label Content="{Binding ElementName=ErrTextBox, Path=AdornedElement.(Validation.Errors).Count}" 
+                                       Foreground="White"/>
+                            </Grid>
+                            <Border BorderBrush="Red">
+                                <AdornedElementPlaceholder Name="ErrTextBox" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.MinWidth" Value="100"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Control.Margin" Value="20 2 2 70"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-    
-    <TabControl>
+
+    <TabControl  DataContext="{Binding Source={StaticResource BeersData}}">
         <TabItem Header="Products">
             <StackPanel>
                 <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
                     <Label Content="Name" Width="{Binding ElementName=BeerNames, Path=ActualWidth}"></Label>
                     <Label Content="Details" Width="{Binding ElementName=BeerDetails, Path=ActualWidth}"></Label>
                 </StackPanel>
-                
+
                 <DockPanel>
                     <ListBox Name="BeerNames"
                              DockPanel.Dock="Left"
                              ItemTemplate="{StaticResource BindTwoProperties}" 
-                             ItemsSource="{Binding ElementName=Window1, Path=Beers}"
-                             SelectionChanged="BeerNames_Selected">
-
+                             ItemsSource="{Binding Path=Beers}"
+                             SelectedIndex="{Binding SelectedItemIndex}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding CommandListItemSelected}" CommandParameter="{Binding ElementName=BeerNames, Path=SelectedIndex}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </ListBox>
 
-                    <ListBox Name="BeerDetails" ItemsSource="{Binding ElementName=Window1, Path=BeerDetailsView}">
+                    <ListBox Name="BeerDetails" ItemsSource="{Binding Path=BeerDetailsView}">
                     </ListBox>
                 </DockPanel>
+                
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Race" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Race, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Speciality" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Speciality, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Producent" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Producent.Name, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Alcohol percent" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.AlcoholPercent, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="IBU" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.IBU, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="EBC" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.EBC, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Serving temperature" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.ServingTemperature, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="BLG" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BLG, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Best before" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BestBefore, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Sea story" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.SeaStory, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Ingredients" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Ingredients, ValidatesOnNotifyDataErrors=True}"></TextBox>
+                </StackPanel>
+
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Button Name="AddBeer" Content="Add" Command="{Binding Path=CommandAdd}" CommandParameter="{Binding Path=BeerToAdd}"></Button>
+                    <Button Name="EditBeer" Content="Edit" Command="{Binding Path=CommandEdit}"></Button>
+                    <Button Name="RemoveBeer" Content="Remove" Command="{Binding Path=CommandRemove}"></Button>
+                </StackPanel>
+
             </StackPanel>
         </TabItem>
         <TabItem Header="Producents">
-          
-            <DockPanel>
-                
-                <ListBox Name="ProducentNames"
-                         DockPanel.Dock="Left" 
-                         ItemsSource="{Binding ElementName=Window1, Path=Producents}" SelectionChanged="ProducentNames_SelectionChanged"
-                         DisplayMemberPath="Name">
+            <StackPanel>
 
-                </ListBox>
-                <ListBox Name="ProducentDetails" ItemsSource="{Binding ElementName=Window1, Path=ProducentDetailsView}">
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Name" Width="{Binding ElementName=ProducentNames, Path=ActualWidth}"></Label>
+                    <Label Content="Details" Width="{Binding ElementName=ProducentDetails, Path=ActualWidth}"></Label>
+                </StackPanel>
 
-                </ListBox>
-            </DockPanel>
+                <DockPanel>
+                    <ListBox Name="ProducentNames"
+                             DockPanel.Dock="Left" 
+                             ItemsSource="{Binding Path=Producents}" SelectionChanged="ProducentNames_SelectionChanged"
+                             DisplayMemberPath="Name">
+
+                    </ListBox>
+                    <ListBox Name="ProducentDetails" ItemsSource="{Binding Path=ProducentDetailsView}">
+
+                    </ListBox>
+                </DockPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Name" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Name}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Town" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Town}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Street" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Street}"></TextBox>
+                </StackPanel>
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="Street number" Width="150px"></Label>
+                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.StreetNumber}"></TextBox>
+                </StackPanel>
+
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Button Name="AddProducent" Content="Add" Command="{Binding Path=CommandAdd}" CommandParameter="{Binding Path=ProducentToAdd}"></Button>
+                    <Button Name="EditProducent" Content="Edit" Command="{Binding Path=CommandEdit}"></Button>
+                    <Button Name="RemoveProducent" Content="Remove" Command="{Binding Path=CommandRemove}"></Button>
+                </StackPanel>
+
+            </StackPanel>
         </TabItem>
     </TabControl>
 </Window>

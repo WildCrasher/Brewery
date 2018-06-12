@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
-//using DAOLogic;
 using System.Reflection;
 using System.Collections;
 
@@ -32,6 +31,7 @@ namespace BusinessLogic
             Dao = (IDAO)daoConstructor?.Invoke(new object[] { });
             
         }
+
         public IDAO getData()
         {
             return Dao;

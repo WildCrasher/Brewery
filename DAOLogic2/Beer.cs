@@ -22,6 +22,11 @@ namespace DAOLogic
         public String SeaStory { get; set; }
         public String Ingredients { get; set; }
 
+        public Beer()
+        {
+        
+        }
+
         public Beer(Race _race, Speciality _speciality, IProducent _producent, Double _alcoholPercent, int _IBU, int _EBC, int _servingTemperature,
                                                             Double _BLG, DateTime _bestBefore, String _seaStory, String _ingredients )
         {

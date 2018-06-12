@@ -21,5 +21,10 @@ namespace DAOLogic
             Street = _street;
             StreetNumber = _streetNumber;
         }
+
+        public Producent()
+        {
+
+        }
     }
 }
