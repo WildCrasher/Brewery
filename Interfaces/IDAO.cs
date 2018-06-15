@@ -8,11 +8,16 @@ namespace Interfaces
 {
     public interface IDAO
     {
-        List<IBeer> getBeers();
-        List<IProducent> getProducents();
-        void AddNewBeer(IBeer beer);
-        void AddNewProducent(IProducent beer);
+        List<IBeer> GetBeers();
         IBeer GetNewBeer();
+        void AddNewBeer(IBeer beer);
+        void EditBeer(IBeer beer, int index);
+        void RemoveBeer(int SelectedIndex);
+
+        List<IProducent> GetProducents();
         IProducent GetNewProducent();
+        void AddNewProducent(IProducent beer);
+        void EditProducent(IProducent producent, int index);
+        void RemoveProducent(int SelectedIndex);
     }
 }

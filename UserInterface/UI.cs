@@ -36,8 +36,8 @@ namespace UserInterface
         public static void Main(string[] args)
         {
             IBL _bl = new BL();
-            printAllBeers(_bl.getData().getBeers());
-            printAllProducents(_bl.getData().getProducents());
+            printAllBeers(_bl.GetData().GetBeers());
+            printAllProducents(_bl.GetData().GetProducents());
             Console.ReadLine();
         }
     }

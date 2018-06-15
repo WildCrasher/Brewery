@@ -32,7 +32,7 @@ namespace BusinessLogic
             
         }
 
-        public IDAO getData()
+        public IDAO GetData()
         {
             return Dao;
         }

@@ -8,6 +8,6 @@ namespace Interfaces
 {
     public interface IBL
     {
-        IDAO getData();
+        IDAO GetData();
     }
 }

@@ -5,12 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:beerns="clr-namespace:ViewModel;assembly=ViewModel"
+        xmlns:conv="clr-namespace:Converter;assembly=Converter"
         xmlns:local="clr-namespace:UIView"
         mc:Ignorable="d"
-        Title="Base of beers" Height="auto" Width="auto" Name="Window1">
+        Title="Base of beers" Height="1000" Width="1000" Name="Window1">
 
     <Window.Resources>
-        <beerns:BeersViewModel x:Key="BeersData"/>
+        <beerns:ViewModel x:Key="BeersData"/>
+        <conv:StringToIntConverter x:Key="StringToIntCnv"/>
+        <conv:StringToDoubleConverter x:Key="StringToDoubleCnv"/>
+        <conv:StringToRaceConverter x:Key="StringToRaceCnv"/>
+        <conv:StringToSpecialityConverter x:Key="StringToSpecialityCnv"/>
+        <conv:StringToDateTimeConverter x:Key="StringToDateTimeCnv"/>
 
         <DataTemplate x:Key="BindTwoProperties">
             <StackPanel FlowDirection="RightToLeft"  Orientation="Horizontal">
@@ -70,66 +76,121 @@
                              SelectedIndex="{Binding SelectedItemIndex}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding CommandListItemSelected}" CommandParameter="{Binding ElementName=BeerNames, Path=SelectedIndex}" />
+                                <i:InvokeCommandAction Command="{Binding CommandBeerListItemSelected}" CommandParameter="{Binding ElementName=BeerNames, Path=SelectedIndex}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListBox>
 
-                    <ListBox Name="BeerDetails" ItemsSource="{Binding Path=BeerDetailsView}">
+                    <ListBox Name="BeerDetails" ItemsSource="{Binding Path=BeerDetailsView, UpdateSourceTrigger=PropertyChanged}">
                     </ListBox>
                 </DockPanel>
-                
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Race" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Race, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Speciality" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Speciality, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Producent" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Producent.Name, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Alcohol percent" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.AlcoholPercent, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="IBU" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.IBU, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="EBC" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.EBC, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Serving temperature" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.ServingTemperature, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="BLG" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BLG, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Best before" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BestBefore, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Sea story" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.SeaStory, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Ingredients" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=BeerToAdd.Ingredients, ValidatesOnNotifyDataErrors=True}"></TextBox>
-                </StackPanel>
-
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Button Name="AddBeer" Content="Add" Command="{Binding Path=CommandAdd}" CommandParameter="{Binding Path=BeerToAdd}"></Button>
-                    <Button Name="EditBeer" Content="Edit" Command="{Binding Path=CommandEdit}"></Button>
-                    <Button Name="RemoveBeer" Content="Remove" Command="{Binding Path=CommandRemove}"></Button>
-                </StackPanel>
-
+                <TabControl>
+                    <TabItem Header="Adding">
+                        <StackPanel>
+                       
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Race" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerRace, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToRaceCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Speciality" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerSpeciality, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToSpecialityCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Producent" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerProducent.Name, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Alcohol percent" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerAlcohol, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDoubleCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="IBU" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerIBU, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="EBC" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerEBC, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Serving temperature" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerServingTemperature, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="BLG" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerBLG, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDoubleCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Best before" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerBestBefore, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDateTimeCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Sea story" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerSeaStory, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Ingredients" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToAdd.BeerIngredients, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Button Name="AddBeer" Content="Add" Command="{Binding Path=CommandBeerAdd}" CommandParameter="{Binding Path=BeerToAdd}"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    
+                    <TabItem Header="Editing">
+                        <StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Race" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerRace, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToRaceCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Speciality" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerSpeciality, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToSpecialityCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Producent" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerProducent.Name, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Alcohol percent" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerAlcohol, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDoubleCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="IBU" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerIBU, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="EBC" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerEBC, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Serving temperature" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerServingTemperature, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="BLG" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerBLG, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDoubleCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Best before" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerBestBefore, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToDateTimeCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Sea story" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerSeaStory, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Ingredients" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=BeerToEdit.BeerIngredients, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Button Name="EditBeer" Content="Edit" Command="{Binding Path=CommandBeerEdit}" CommandParameter="{Binding Path=BeerToEdit}"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <Button Name="RemoveBeer" Content="Remove" Command="{Binding Path=CommandBeerRemove}"></Button>
             </StackPanel>
         </TabItem>
         <TabItem Header="Producents">
@@ -143,36 +204,72 @@
                 <DockPanel>
                     <ListBox Name="ProducentNames"
                              DockPanel.Dock="Left" 
-                             ItemsSource="{Binding Path=Producents}" SelectionChanged="ProducentNames_SelectionChanged"
-                             DisplayMemberPath="Name">
+                             ItemsSource="{Binding Path=Producents}"
+                             DisplayMemberPath="Name"
+                            SelectedIndex="{Binding SelectedItemIndex}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding CommandProducentListItemSelected}" CommandParameter="{Binding ElementName=ProducentNames, Path=SelectedIndex}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
                     </ListBox>
                     <ListBox Name="ProducentDetails" ItemsSource="{Binding Path=ProducentDetailsView}">
 
                     </ListBox>
                 </DockPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Name" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Name}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Town" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Town}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Street" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.Street}"></TextBox>
-                </StackPanel>
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Label Content="Street number" Width="150px"></Label>
-                    <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.StreetNumber}"></TextBox>
-                </StackPanel>
+                
+                <TabControl>
+                    <TabItem Header="Adding">
+                        <StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Name" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.ProducentName, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Town" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.ProducentTown, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Street" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.ProducentStreet, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Street number" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToAdd.ProducentStreetNumber, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
 
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
-                    <Button Name="AddProducent" Content="Add" Command="{Binding Path=CommandAdd}" CommandParameter="{Binding Path=ProducentToAdd}"></Button>
-                    <Button Name="EditProducent" Content="Edit" Command="{Binding Path=CommandEdit}"></Button>
-                    <Button Name="RemoveProducent" Content="Remove" Command="{Binding Path=CommandRemove}"></Button>
-                </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Button Name="AddProducent" Content="Add" Command="{Binding Path=CommandProducentAdd}" CommandParameter="{Binding Path=ProducentToAdd}"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem Header="Editing">
+                        <StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Name" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToEdit.ProducentName, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Town" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToEdit.ProducentTown, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Street" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToEdit.ProducentStreet, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Label Content="Street number" Width="150px"></Label>
+                                <TextBox Width="300px" Text="{Binding Path=ProducentToEdit.ProducentStreetNumber, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, Converter={StaticResource StringToIntCnv}}"></TextBox>
+                            </StackPanel>
+                            <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                                <Button Name="EditProducent" Content="Edit" Command="{Binding Path=CommandProducentEdit}"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <Button Name="RemoveProducent" Content="Remove" Command="{Binding Path=CommandProducentRemove}"></Button>
 
             </StackPanel>
         </TabItem>

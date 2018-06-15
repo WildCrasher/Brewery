@@ -17,20 +17,9 @@ namespace UIView
 {
     public partial class MainWindow : Window 
     {
-
         public MainWindow()
         {
             InitializeComponent();      
-        }
-
-        private void BeerNames_Selected(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void ProducentNames_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
